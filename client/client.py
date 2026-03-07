@@ -33,7 +33,7 @@ def begin_client():
     u_name=input("Please Enter your userName: ") 
     # To recognise different users we ask an username before sending any message
 
-    clt.send(f"JOINNING {u_name}".encode()) 
+    clt.send(f"JOINING {u_name}".encode()) 
     # we will notify all other clients that this user with username joined the chat
 
     recv_thread=threading.Thread( 
@@ -46,11 +46,11 @@ def begin_client():
     recv_thread.start()
 
     while True:
-        mess=input("Type a message or type /quit for quitting") 
+        mess=input("Type a message or type /quit for quitting: ") 
         # will continue until this client want to quit 
 
         if mess=="/quit":
-            clt.send("QUITTING".encode())
+            clt.send("QUITING".encode())
             break
         clt.send(f"MESSAGE {mess}".encode())
 
