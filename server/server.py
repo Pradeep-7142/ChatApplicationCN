@@ -72,9 +72,9 @@ def new_client_controller(clnt_sckt, adr):
     # firstly need to notify all
 
     name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
-    print(f"{name_of_user} is now disconnected")
+    print(f"{name_of_user} is now disconnected due to some problem")
 
-    func_to_broadcast(f"{name_of_user} has left the chat",clnt_sckt)
+    func_to_broadcast(f"{name_of_user} has left the chat due to some problem",clnt_sckt)
 
     if clnt_sckt in list_of_clients:
         list_of_clients.remove(clnt_sckt)
