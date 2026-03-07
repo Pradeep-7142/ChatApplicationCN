@@ -60,7 +60,7 @@ def new_client_controller(clnt_sckt, adr):
                 name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
                 print(f"{name_of_user} has left the chat ")
 
-                func_to_broadcast(f"{name_of_user} has left the chat")
+                func_to_broadcast(f"{name_of_user} has left the chat",clnt_sckt)
 
                 break
         except:
@@ -68,6 +68,13 @@ def new_client_controller(clnt_sckt, adr):
 
     # now if user has left the chat then we can remove its data from
     # our storage of map and array both
+
+    # firstly need to notify all
+
+    name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
+    print(f"{name_of_user} is now disconnected")
+
+    func_to_broadcast(f"{name_of_user} has left the chat",clnt_sckt)
 
     if clnt_sckt in list_of_clients:
         list_of_clients.remove(clnt_sckt)
