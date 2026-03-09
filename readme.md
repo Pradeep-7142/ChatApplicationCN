@@ -1,58 +1,70 @@
-Welcome to my chat Application: 
+# Chat Application (Socket Programming)
 
-#########################################
-I've created a Python chat program that makes use of socket programming. I decided to employ the client-server architecture. This allows several clients to connect to a single server and communicate with one another. Multiple connections can be accepted simultaneously by the server, which will then forward those messages to each client that is connected. 
+# Overview
+This project is about the implementing a  simple multi-client chat application. I have used python scokets to implement it. This system includes a client-server architecture where a server is at the center and this mananges the communication between all connected clients simultaneously.
 
-Every time a client connects to the server, it will forward the message to every other client that is connected to the server. 
+This application will work in terminal where we can make multiple clients by launching a new tab in terminal.
 
-I decided to use TCP sockets for this chat program in order to ensure dependable communication.
+User can enter the chat , send the messages and they will also recieve messages from other users that are currently active in the chat.
 
-#######################################
+# Features
 
-To demand the following: 
-Python  must be installed. 
-To run the application, no external libraries are required. 
-
-#########################################
-To operate the server: 
-
-Before any client can connect, the server needs to be operational. Go to the server's directory, launch the terminal, and type the following command to start the server: 
- python server.py in terminal and run it.
+More than one client or user can join and chat simultaneously
+Messages will be sent to all the participants
+Notification when any new user join as well as leave the chat
+Time stamp is added with every message to track the record
+Empty message are handled 
+Long messages are also not allowed to send once.You can send in small sentences
+It will also notify when any user unexpectedly leaves the chat or closes the terminal
 
 
-The server will wait for clients to connect to it after it has started. 
+# Project Structure
+ChatAppCn/
+|
+|__ server.py
+|__ client.py
+|__ Readme.md
+|__Report.pdf
 
-#######################################
-To manage the client: 
+server.py: This file handles all client connectins and broadcasts messages
+client.py: This file allows users to connect and communicate with all participants
 
-To launch a client, open the terminal, navigate to the client's directory, and execute the following command: 
+# Requirements
+python must be installed.
+No external libraries are required.
 
-Python client.py
-You will then be prompted to enter your name by the client program.
+# How to run the porject
+1. Firslty Start the server
+Open a terminal and then run this command : python server.py
+hit enter
+
+server output example:
+The server has started on port 5000
+Ther server is waiting for connections to join for chat...
+
+2. Start Clients
+Open multiple terminals and run same command in all : python client.py
+
+enter a username when you see a message saying to do the same.
+example: pradeep
+
+3. Type and send messages
+4. Leave the chat by typing /quit and hint enter.
+
+# Example Chat
+[10:10:01] User 1 joined the chat
+[10:20:05] User 2: hello everyone
+[12:02:01] User 1 left the chat
 
 
-#########################################
-To simulate multiple users taking part in the chat, you can then run multiple instances of the client from multiple terminals. 
+# Handelling The Edge cases
+Empty messages are not allowed. Messages only containing whitspaces will not be sent
 
+Messages that are out of the length will not be sent and told that send in small parts
 
-I have used  Three prefixes to tell server what to do with the message recieved from client:
+If a client closes the terminal or any other unexpected thing happen then a message will be sent to all and user will be removed from the chat.
 
-1. JOINING:  This will tell that send a joining message to all for this client 
-2. MESSAGE: This will tell that this is actual message sent by already joined client
-3. QUITING: This will tell server to send a quit message to all that this user is quiting the chat
+# Author
+Pradeep Kumar
 
-#########################################
-
-These Features of This Chat:
-
-A maximum of 255 clients can be served concurrently by the server.
-
-When a client sends a message, the server replies by sending the same message to every client that is presently connected to the server.
-
-When a client connects or disconnects from the server, the server notifies all connected clients.
-
-When a client disconnects from the chat, the server will be aware of it.
-
-######################################
-
-Thankyou.
+Thankyou !
