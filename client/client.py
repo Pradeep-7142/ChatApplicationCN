@@ -28,8 +28,6 @@ def begin_client():
     clt.connect(("127.0.0.1",5000)) 
     # connect to server that is running on localhost at port 5000
 
-    print("Connected to server")
-
     u_name=input("Please Enter your userName: ") 
     # To recognise different users we ask an username before sending any message
 
@@ -48,14 +46,17 @@ def begin_client():
     while True:
         mess=input("Type a message or type /quit for quitting: ") 
         # will continue until this client want to quit 
-
-        if mess=="/quit":
-            clt.send("QUITING".encode())
-            break
-        clt.send(f"MESSAGE {mess}".encode())
+        if mess.strip() != "":
+            if len(mess.encode())>1000:
+                print("Message is too long please follow the limit of 500 charaters only.")
+                continue
+            if mess=="/quit":
+                clt.send("QUITING".encode())
+                break
+            clt.send(f"MESSAGE {mess}".encode())
 
     clt.close() # after quiting we can close the client
-    print("You have left the chatting")
+
 
 
 begin_client()

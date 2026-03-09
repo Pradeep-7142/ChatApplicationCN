@@ -1,6 +1,6 @@
 import socket
 import threading
-
+from datetime import datetime
 
 # we need a list to store clients socket dynamically
 list_of_clients=[]
@@ -13,12 +13,14 @@ dict_for_client_username_map={}
 # we need a function to send the message from one sender 
 # to all other chat participants (broadcasting)
 def func_to_broadcast(mess, clnt_sock=None):
+    curr_time=datetime.now().strftime("%H:%M:%S")
+    mess_to_cast=f"\n[{curr_time}] {mess}"
     for clnt in list_of_clients:
         # Here we are making sure that the message 
         # should not sent  back to the sender
         if clnt!=clnt_sock:
             try:
-                clnt.send(mess.encode())
+                clnt.send(mess_to_cast.encode())
             except:
                 clnt.close()
                 list_of_clients.remove(clnt)
@@ -26,6 +28,7 @@ def func_to_broadcast(mess, clnt_sock=None):
 # Now we will write a function that will handle new clients
 def new_client_controller(clnt_sckt, adr):
     print(f"We have a new connection from {adr}")
+    is_quit=False
 
     #it will run until whole message from client is not decoded
     while True:
@@ -41,27 +44,20 @@ def new_client_controller(clnt_sckt, adr):
                 name_of_user=msg.split(" ",1)[1]
                 dict_for_client_username_map[clnt_sckt]=name_of_user
 
-                print(f"{name_of_user} is now in the chat as a new joinee")
-
                 func_to_broadcast(f"{name_of_user} has joined the chat")
             # if it is a message from already joinned member
             elif msg.startswith("MESSAGE"):
                 main_mess=msg.split(" ",1)[1]
                 name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
-
                 combined_mess=f"{name_of_user}: {main_mess}"
-
-                print(combined_mess)
 
                 func_to_broadcast(combined_mess, clnt_sckt)
             
             # if client want to quit
             elif msg.startswith("QUITING"):
                 name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
-                print(f"{name_of_user} has left the chat ")
-
                 func_to_broadcast(f"{name_of_user} has left the chat",clnt_sckt)
-
+                is_quit=True
                 break
         except:
             break
@@ -72,9 +68,9 @@ def new_client_controller(clnt_sckt, adr):
     # firstly need to notify all
 
     name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
-    print(f"{name_of_user} is now disconnected due to some problem")
-
-    func_to_broadcast(f"{name_of_user} has left the chat due to some problem",clnt_sckt)
+    if not is_quit:
+        
+        func_to_broadcast(f"{name_of_user} has left the chat due to some problem",clnt_sckt)
 
     if clnt_sckt in list_of_clients:
         list_of_clients.remove(clnt_sckt)
