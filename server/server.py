@@ -14,7 +14,9 @@ dict_for_client_username_map={}
 # to all other chat participants (broadcasting)
 def func_to_broadcast(mess, clnt_sock=None):
     curr_time=datetime.now().strftime("%H:%M:%S")
-    mess_to_cast=f"\n[{curr_time}] {mess}"
+    mess_to_cast=f"[{curr_time}] {mess}"
+    print(mess_to_cast)
+    
     for clnt in list_of_clients:
         # Here we are making sure that the message 
         # should not sent  back to the sender
@@ -40,13 +42,13 @@ def new_client_controller(clnt_sckt, adr):
 
             # now we check the prefix of message
             # if it was a new joinee
-            if msg.startswith("JOINING"):
+            if msg.startswith("JOIN"):
                 name_of_user=msg.split(" ",1)[1]
                 dict_for_client_username_map[clnt_sckt]=name_of_user
 
                 func_to_broadcast(f"{name_of_user} has joined the chat")
             # if it is a message from already joinned member
-            elif msg.startswith("MESSAGE"):
+            elif msg.startswith("MSG"):
                 main_mess=msg.split(" ",1)[1]
                 name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
                 combined_mess=f"{name_of_user}: {main_mess}"
@@ -54,7 +56,7 @@ def new_client_controller(clnt_sckt, adr):
                 func_to_broadcast(combined_mess, clnt_sckt)
             
             # if client want to quit
-            elif msg.startswith("QUITING"):
+            elif msg.startswith("QUIT"):
                 name_of_user=dict_for_client_username_map.get(clnt_sckt,"Unknown")
                 func_to_broadcast(f"{name_of_user} has left the chat",clnt_sckt)
                 is_quit=True
@@ -84,7 +86,7 @@ def new_client_controller(clnt_sckt, adr):
 def begin_server():
     server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-    server.bind(("127.0.0.1",5000))
+    server.bind(("0.0.0.0",5000))
     server.listen()
 
     print("The server has started on port 5000")

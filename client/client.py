@@ -25,13 +25,13 @@ def accept_messages(clientSocket):
 def begin_client():
     clt=socket.socket(socket.AF_INET,socket.SOCK_STREAM) 
     # we will create a socket  using tcp and ipv4 protocols.
-    clt.connect(("127.0.0.1",5000)) 
+    clt.connect(("10.121.168.201",6000)) 
     # connect to server that is running on localhost at port 5000
 
     u_name=input("Please Enter your userName: ") 
     # To recognise different users we ask an username before sending any message
 
-    clt.send(f"JOINING {u_name}".encode()) 
+    clt.send(f"JOIN {u_name}".encode()) 
     # we will notify all other clients that this user with username joined the chat
 
     recv_thread=threading.Thread( 
@@ -51,9 +51,9 @@ def begin_client():
                 print("Message is too long please follow the limit of 500 charaters only.")
                 continue
             if mess=="/quit":
-                clt.send("QUITING".encode())
+                clt.send("QUIT".encode())
                 break
-            clt.send(f"MESSAGE {mess}".encode())
+            clt.send(f"MSG {mess}".encode())
 
     clt.close() # after quiting we can close the client
 
